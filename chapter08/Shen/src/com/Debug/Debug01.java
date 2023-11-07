@@ -1,0 +1,18 @@
+package com.Debug;
+
+/**
+ * @Author 申宇强
+ * @Date 2023/6/17 15:10
+ */
+public class Debug01 {
+    public static void main(String[] args) {
+        //演示逐行执行代码
+        int sum = 0;
+        for (int i = 0; i < 5; i++) {
+            sum += i;
+            System.out.println("i=" + i);
+            System.out.println("sum=" + i);
+        }
+        System.out.println("退出for....");
+    }
+}
