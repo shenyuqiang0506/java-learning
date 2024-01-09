@@ -53,7 +53,7 @@ public class StringMethod02 {
         String a = "jcck";// len = 3
         String b = "jack";// len = 4
         System.out.println(a.compareTo(b)); // 返回值是 'c' - 'a' = 2的值
-// 8.format 格式字符串
+        // 8.format 格式字符串
         /* 占位符有:
          * %s 字符串 %c 字符 %d 整型 %.2f 浮点型
          *
