@@ -1,13 +1,10 @@
 package com.test;
 
 import com.bean.User;
+import com.mapper.TestMapper;
 import com.utils.MybatisUtils;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -17,9 +14,9 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        try (SqlSession sqlSession = MybatisUtils.getSession(true)) {
-            List<User> student = sqlSession.selectList("selectUser");
-            student.forEach(System.out::println);
+        try (SqlSession Session = MybatisUtils.getSession(true)) {
+            TestMapper mapper = Session.getMapper(TestMapper.class);
+            mapper.selectUser().forEach(System.out::println);
         }
     }
 }
