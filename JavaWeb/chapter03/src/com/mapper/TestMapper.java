@@ -10,4 +10,10 @@ import java.util.List;
  */
 public interface TestMapper {
     List<User> selectUser();
+
+    User getUserById(int id);
+
+    int addUser(User user);
+
+    int deleteUser(int id);
 }

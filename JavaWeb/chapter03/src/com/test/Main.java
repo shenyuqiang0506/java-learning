@@ -16,7 +16,14 @@ public class Main {
 
         try (SqlSession Session = MybatisUtils.getSession(true)) {
             TestMapper mapper = Session.getMapper(TestMapper.class);
+            System.out.println(mapper.getUserById(2));
+            System.out.println("========");
+            System.out.println(mapper.addUser(new User().setName("张三").setPassword("123456")));
+            System.out.println("========");
+            System.out.println(mapper.deleteUser(7));
+            System.out.println("=======");
             mapper.selectUser().forEach(System.out::println);
+            System.out.println("========");
         }
     }
 }
