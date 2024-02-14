@@ -3,5 +3,14 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean class="com.shen.entity.Student"/>
+<!--    <bean class="com.shen.entity.Student"/>-->
+<!--    <bean class="com.shen.entity.ArtStudent"/>-->
+<!--    <bean class="com.shen.entity.SportStudent"/>-->
+<!--    <bean class="com.shen.test.Student">-->
+<!--        <property name="name" value="shen"/>-->
+<!--        <property name="teacher" ref="teacher"/>-->
+<!--    </bean>-->
+<!--    &lt;!&ndash;    <bean class="com.shen.test.Student" autowire="byType"/> 自动装配&ndash;&gt;-->
+<!--    <bean name="teacher" class="com.shen.test.ArtTeacher"/>-->
+    <bean class="com.shen.test.StudentFactory" factory-method="getStudent"/>
 </beans>
