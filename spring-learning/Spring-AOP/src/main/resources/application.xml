@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <bean class="com.shen.entity.Student"/>
+    <bean id="studentAOP" class="com.shen.entity.StudentAOP"/>
+    <aop:config>
+        <aop:pointcut id="test" expression="execution(* com.shen.entity.Student.study(String))"/>
+        <!--        <aop:aspect ref="studentAOP">-->
+        <!--            &lt;!&ndash;            <aop:after method="afterStudy" pointcut-ref="test"/>&ndash;&gt;-->
+        <!--            &lt;!&ndash;            <aop:around method="around" pointcut-ref="test"/>&ndash;&gt;-->
+        <!--        </aop:aspect>-->
+        <aop:advisor advice-ref="studentAOP" pointcut-ref="test"/>
+
+    </aop:config>
+</beans>
