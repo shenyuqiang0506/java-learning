@@ -1,16 +1,20 @@
 package com.shen.config;
 
+import com.alibaba.fastjson2.support.spring6.http.converter.FastJsonHttpMessageConverter;
 import com.shen.Interceptor.MainInterceptor;
 import com.shen.Interceptor.SubInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
+
+import java.util.List;
 
 /**
  * @Author 申宇强
@@ -70,5 +74,11 @@ public class WebConfiguration implements WebMvcConfigurer {
 //                .excludePathPatterns("/test");//拦截器不进行拦截的路径
         //二号拦截器
         registry.addInterceptor(new SubInterceptor()).addPathPatterns("/**");
+    }
+
+//    FastJSON转换器配置
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new FastJsonHttpMessageConverter());
     }
 }

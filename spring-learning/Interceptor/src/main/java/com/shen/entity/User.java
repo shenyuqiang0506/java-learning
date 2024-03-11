@@ -1,6 +1,7 @@
 package com.shen.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  * @Date 2024/3/7 9:59
  */
 @Data
+@AllArgsConstructor
 public class User {
     String username;
     String password;
