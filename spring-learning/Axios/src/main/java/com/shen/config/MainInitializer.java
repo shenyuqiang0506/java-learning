@@ -1,5 +1,7 @@
 package com.shen.config;
 
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.ServletRegistration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -21,5 +23,12 @@ public class MainInitializer extends AbstractAnnotationConfigDispatcherServletIn
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};    //匹配路径，与上面一致
+    }
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        // 直接通过registration配置Multipart相关配置，必须配置临时上传路径，建议选择方便打开的
+        // 同样可以设置其他属性：maxFileSize, maxRequestSize, fileSizeThreshold
+        registration.setMultipartConfig(new MultipartConfigElement("D:\\abb"));
     }
 }
