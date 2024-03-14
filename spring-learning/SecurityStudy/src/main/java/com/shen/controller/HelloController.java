@@ -79,21 +79,21 @@ public class HelloController {
     }
 
 
-    @Resource
-    UserDetailsManager manager;
-    @Resource
-    PasswordEncoder encoder;
+//    @Resource
+//    UserDetailsManager manager;
+//    @Resource
+//    PasswordEncoder encoder;
 
-    @ResponseBody
-    @PostMapping("/change-password")
-
-
-    public JSONObject changePassword(@RequestParam String oldPassword,
-                                     @RequestParam String newPassword) {
-        manager.changePassword(oldPassword, encoder.encode(newPassword));
-        JSONObject object = new JSONObject();
-        object.put("success", true);
-        return object;
-    }
+//    @ResponseBody
+//    @PostMapping("/change-password")
+//
+//
+//    public JSONObject changePassword(@RequestParam String oldPassword,
+//                                     @RequestParam String newPassword) {
+//        manager.changePassword(oldPassword, encoder.encode(newPassword));
+//        JSONObject object = new JSONObject();
+//        object.put("success", true);
+//        return object;
+//    }
 }
 

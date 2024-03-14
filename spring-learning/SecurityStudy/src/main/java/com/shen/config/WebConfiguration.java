@@ -1,5 +1,6 @@
 package com.shen.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
@@ -22,7 +23,9 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @EnableWebMvc//快速配置SpringMvc注解，如果不添加此注解会导致后续无法通过实现WebMvcConfigurer接口进行自定义配置
 @ComponentScans({
         @ComponentScan("com.shen.controller"),
+        @ComponentScan("com.shen.service")
 })
+@MapperScan("com.shen.mapper")
 public class WebConfiguration implements WebMvcConfigurer {
     //我们需要使用ThymeleafViewResolver作为视图解析器，并解析我们的HTML页面
     @Bean
