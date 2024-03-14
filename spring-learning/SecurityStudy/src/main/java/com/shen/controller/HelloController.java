@@ -1,7 +1,11 @@
 package com.shen.controller;
 
 import com.alibaba.fastjson2.JSONObject;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,6 +76,24 @@ public class HelloController {
     @GetMapping("/")
     public String index() {
         return "index";
+    }
+
+
+    @Resource
+    UserDetailsManager manager;
+    @Resource
+    PasswordEncoder encoder;
+
+    @ResponseBody
+    @PostMapping("/change-password")
+
+
+    public JSONObject changePassword(@RequestParam String oldPassword,
+                                     @RequestParam String newPassword) {
+        manager.changePassword(oldPassword, encoder.encode(newPassword));
+        JSONObject object = new JSONObject();
+        object.put("success", true);
+        return object;
     }
 }
 
