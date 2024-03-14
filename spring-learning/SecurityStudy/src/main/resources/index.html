@@ -11,6 +11,8 @@
         转账账号：
         <input type="text" id="account"/>
     </label>
+    <!--    403这是因为SpringSecurity自带了csrf防护，需求我们在POST请求中携带页面中的csrfToken才可以，否则一律进行拦截操作，这里我们可以将其嵌入到页面中-->
+    <input type="text" th:id="${_csrf.getParameterName()}" th:value="${_csrf.token}" hidden>
     <button onclick="pay()">立即转账</button>
 </div>
 </body>
@@ -19,7 +21,9 @@
 <script>
     function pay() {
         const account = document.getElementById("account").value
-        axios.post('/mvc/pay', {account: account}, {
+        //携带csrfToken
+        const csrf = document.getElementById("_csrf").value
+        axios.post('/mvc/pay', {account: account, _csrf: csrf}, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
