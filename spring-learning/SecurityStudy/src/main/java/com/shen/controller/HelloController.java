@@ -62,21 +62,21 @@ public class HelloController {
 //    }
 
     //SpringSecurity的转账操作
-    @ResponseBody
-    @PostMapping("/pay")
-    public JSONObject pay(@RequestParam String account) {
-        JSONObject object = new JSONObject();
-        System.out.println("转账给" + account + "成功，交易已完成！");
-        object.put("success", true);
-        return object;
-    }
-
-    //SpringSecurity的登录
-
-    @GetMapping("/")
-    public String index() {
-        return "index";
-    }
+//    @ResponseBody
+//    @PostMapping("/pay")
+//    public JSONObject pay(@RequestParam String account) {
+//        JSONObject object = new JSONObject();
+//        System.out.println("转账给" + account + "成功，交易已完成！");
+//        object.put("success", true);
+//        return object;
+//    }
+//
+//    //SpringSecurity的登录
+//
+//    @GetMapping("/")
+//    public String index() {
+//        return "index";
+//    }
 
 
 //    @Resource
@@ -84,7 +84,7 @@ public class HelloController {
 //    @Resource
 //    PasswordEncoder encoder;
 
-//    @ResponseBody
+    //    @ResponseBody
 //    @PostMapping("/change-password")
 //
 //
@@ -95,5 +95,15 @@ public class HelloController {
 //        object.put("success", true);
 //        return object;
 //    }
+    //自定义界面
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 }
 

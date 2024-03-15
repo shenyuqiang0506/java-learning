@@ -22,7 +22,7 @@ public class AuthorizeService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = mapper.findAccountByName(username);
-        if (account != null)
+        if (account == null)
             throw new UsernameNotFoundException("用户不存在");
         return User.withUsername(account.getUsername())
                 .password(account.getPassword())
