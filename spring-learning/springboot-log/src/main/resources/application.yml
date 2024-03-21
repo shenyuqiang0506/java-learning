@@ -4,17 +4,22 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+  #多环境配置
+  profiles:
+#    active: dev
+    active: '@environment@'  #注意YAML配置文件需要加单引号，否则会报错
   mvc:
-    static-path-pattern: /static/**   #????????
-    # Spring Security ????
+    static-path-pattern: /static/**    #静态资源解析地址
+    # Spring Security 相关配置
   security:
     filter:
-      order: -100 #Spring Security ??????
+      order: -100 #Spring Security 过滤器优先级
     user:
-      name: 'admin'   #???????
-      password: '123456'   #??????
-      roles: #???????
+      name: 'admin'   #默认登录用户名
+      password: '123456'   #默认登录密码
+      roles: #默认用户的角色
         - admin
         - user
-server:
-  port: 8080
+    #server:
+    #  port: 8080
+
