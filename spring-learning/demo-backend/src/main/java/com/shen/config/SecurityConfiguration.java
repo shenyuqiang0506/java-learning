@@ -1,16 +1,21 @@
 package com.shen.config;
 
 import com.shen.entity.RestBean;
+import com.shen.filter.JwtAuthenticationFilter;
+import com.shen.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -64,6 +69,13 @@ public class SecurityConfiguration {
                     conf.logoutUrl("/api/auth/logout");
                     conf.logoutSuccessHandler(this::onAuthenticationSuccess);
                 })
+                //jwt配置
+                //将Session管理创建策略改成无状态，这样SpringSecurity就不会创建会话了，也不会采用之前那套机制记录用户，因为现在我们可以直接从JWT中获取信息
+                .sessionManagement(conf -> {
+                    conf.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                })
+                //添加我们用于处理JWT的过滤器到Security过滤器链中，注意要放在UsernamePasswordAuthenticationFilter之前
+                .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -87,17 +99,19 @@ public class SecurityConfiguration {
     }
 
     //方法的整合
+    //这个跟之前一样的写法，整合到一起处理，统一返回JSON格式
     private void handleProcess(HttpServletRequest request,
                                HttpServletResponse response,
                                Object exceptionOrAuthentication) throws IOException {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
-        if (exceptionOrAuthentication instanceof AccessDeniedException exception) {
+        if(exceptionOrAuthentication instanceof AccessDeniedException exception) {
             writer.write(RestBean.failure(403, exception.getMessage()).asJsonString());
-        } else if (exceptionOrAuthentication instanceof Exception exception) {
+        } else if(exceptionOrAuthentication instanceof AuthenticationException exception) {
             writer.write(RestBean.failure(401, exception.getMessage()).asJsonString());
-        } else if (exceptionOrAuthentication instanceof Authentication authentication) {
-            writer.write(RestBean.success(authentication.getName()).asJsonString());
+        } else if(exceptionOrAuthentication instanceof Authentication authentication){
+            //不过这里需要注意，在登录成功的时候需要返回我们生成的JWT令牌，这样客户端下次访问就可以携带这个令牌了，令牌过期之后就需要重新登录才可以
+            writer.write(RestBean.success(JwtUtils.createJwt((User) authentication.getPrincipal())).asJsonString());
         }
     }
 }
