@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -52,6 +53,17 @@ public class SecurityConfiguration {
                     source.registerCorsConfiguration("/**", cors);  //直接针对于所有地址生效
                     conf.configurationSource(source);
                 })
+                //处理异常
+                .exceptionHandling(conf -> {
+                    //配置授权相关异常处理器
+                    conf.accessDeniedHandler(this::handleProcess);
+                    //配置验证相关异常的处理器
+                    conf.authenticationEntryPoint(this::handleProcess);
+                })
+                .logout(conf -> {
+                    conf.logoutUrl("/api/auth/logout");
+                    conf.logoutSuccessHandler(this::onAuthenticationSuccess);
+                })
                 .build();
     }
 
@@ -72,5 +84,20 @@ public class SecurityConfiguration {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
         writer.write(RestBean.success(authentication.getName()).asJsonString());
+    }
+
+    //方法的整合
+    private void handleProcess(HttpServletRequest request,
+                               HttpServletResponse response,
+                               Object exceptionOrAuthentication) throws IOException {
+        response.setContentType("application/json;charset=utf-8");
+        PrintWriter writer = response.getWriter();
+        if (exceptionOrAuthentication instanceof AccessDeniedException exception) {
+            writer.write(RestBean.failure(403, exception.getMessage()).asJsonString());
+        } else if (exceptionOrAuthentication instanceof Exception exception) {
+            writer.write(RestBean.failure(401, exception.getMessage()).asJsonString());
+        } else if (exceptionOrAuthentication instanceof Authentication authentication) {
+            writer.write(RestBean.success(authentication.getName()).asJsonString());
+        }
     }
 }
