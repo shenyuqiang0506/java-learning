@@ -265,7 +265,7 @@
                             </a>
                             <div class="user-info-box">
                                 <div class="drop-down-header">
-                                    <h4>John Brown</h4>
+                                    <h4 id="username">John Brown</h4>
                                     <p>UI | UX Designer</p>
                                 </div>
                                 <ul>
@@ -1722,3 +1722,11 @@
 </body>
 
 </html>
+<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+<script>
+    axios.get('http://localhost:8081/api/user/name', {
+        withCredentials: true  //携带Cookie访问，不然服务器不认识我们
+    }).then(({data}) => {
+        document.getElementById('username').innerText = data.data
+    })
+</script>
