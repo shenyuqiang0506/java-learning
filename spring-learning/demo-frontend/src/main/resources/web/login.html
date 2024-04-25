@@ -101,13 +101,14 @@
         }, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            withCredentials: true
+            }
         }).then(({data}) => {
-            if (data.code === 200) {  //通过状态码进行判断
-                window.location.href = '/index.html'  //登录成功进入主页
+            if (data.code === 200) {
+                //将得到的JWT令牌存到sessionStorage用于本次会话
+                sessionStorage.setItem("access_token", data.data)
+                window.location.href = '/index.html'
             } else {
-                alert('登录失败：' + data.message)   //登录失败返回弹窗
+                alert('登录失败：' + data.message)
             }
         })
     }
